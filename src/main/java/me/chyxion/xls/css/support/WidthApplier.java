@@ -2,11 +2,15 @@ package me.chyxion.xls.css.support;
 
 import java.util.Map;
 import java.util.HashMap;
+
+import me.chyxion.xls.TableListToXls;
 import me.chyxion.xls.css.CssUtils;
 import me.chyxion.xls.css.CssApplier;
 import org.apache.poi.hssf.usermodel.HSSFCell;
 import org.apache.poi.hssf.usermodel.HSSFSheet;
 import org.apache.poi.hssf.usermodel.HSSFCellStyle;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 
 /**
@@ -17,7 +21,9 @@ import org.apache.poi.hssf.usermodel.HSSFCellStyle;
  * Oct 24, 2014 5:14:22 PM
  */
 public class WidthApplier implements CssApplier {
-
+	private static final String TAG = "WidthApplier";
+	private static final Logger log =
+			LoggerFactory.getLogger(TableListToXls.class);
 	/**
 	 * {@inheritDoc}
 	 */
@@ -36,6 +42,7 @@ public class WidthApplier implements CssApplier {
     public void apply(HSSFCell cell, HSSFCellStyle cellStyle, Map<String, String> style) {
     	int width = Math.round(CssUtils.getInt(style.get(WIDTH)) * 2048 / 8.43F);
     	HSSFSheet sheet = cell.getSheet();
+		log.debug("sheet: {}, style: {}",sheet,style);
     	int colIndex = cell.getColumnIndex();
     	if (width > sheet.getColumnWidth(colIndex)) {
     		if (width > 255 * 256) {
